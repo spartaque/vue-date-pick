@@ -43,7 +43,7 @@
                                 <button v-bind:class="directionClass" v-bind:key="currentPeriod.month" type="button">
                                     {{ months[currentPeriod.month] }}
                                 </button>
-                                <select v-model="currentPeriod.month">
+                                <select v-model="currentPeriod.month" @change="emitCurrentPeriodChanged()">
                                     <option v-for="(month, index) in months" v-bind:value="index" v-bind:key="month">
                                         {{ month }}
                                     </option>
@@ -53,7 +53,7 @@
                                 <button v-bind:class="directionClass" v-bind:key="currentPeriod.year" type="button">
                                     {{ currentPeriod.year }}
                                 </button>
-                                <select v-model="currentPeriod.year">
+                                <select v-model="currentPeriod.year" @change="emitCurrentPeriodChanged()">
                                     <option v-for="year in yearRange" v-bind:value="year" v-bind:key="year">
                                         {{ year }}
                                     </option>
@@ -324,7 +324,7 @@ export default {
                 this.inputValue = this.valueToInputFormat(value);
 
                 this.currentPeriod = this.getPeriodFromValue(value, this.format);
-                this.$emit('current-period-changed', this.currentPeriod);
+                this.emitCurrentPeriodChanged();
             }
 
         },
@@ -462,7 +462,7 @@ export default {
                 month: incrementDate.getMonth(),
                 year: incrementDate.getFullYear()
             };
-            this.$emit('current-period-changed', this.currentPeriod);
+            this.emitCurrentPeriodChanged();
 
         },
 
@@ -487,7 +487,7 @@ export default {
                 this.opened = true;
 
                 this.currentPeriod = this.getPeriodFromValue(this.value, this.format);
-                this.$emit('current-period-changed', this.currentPeriod);
+                this.emitCurrentPeriodChanged();
 
                 this.addCloseEvents();
                 this.setupPosition();
@@ -662,8 +662,11 @@ export default {
 
             this.$emit('input', this.formatDateToString(currentDate, this.format));
 
-        }
+        },
 
+        emitCurrentPeriodChanged() {
+            this.$emit('current-period-changed', this.currentPeriod);
+        }
     }
 
 };
