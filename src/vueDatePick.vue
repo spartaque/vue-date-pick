@@ -322,7 +322,9 @@ export default {
 
             if (this.isValidValue) {
                 this.inputValue = this.valueToInputFormat(value);
+
                 this.currentPeriod = this.getPeriodFromValue(value, this.format);
+                this.$emit('current-period-changed', this.currentPeriod);
             }
 
         },
@@ -460,6 +462,7 @@ export default {
                 month: incrementDate.getMonth(),
                 year: incrementDate.getFullYear()
             };
+            this.$emit('current-period-changed', this.currentPeriod);
 
         },
 
@@ -482,9 +485,13 @@ export default {
 
             if (!this.opened) {
                 this.opened = true;
+
                 this.currentPeriod = this.getPeriodFromValue(this.value, this.format);
+                this.$emit('current-period-changed', this.currentPeriod);
+
                 this.addCloseEvents();
                 this.setupPosition();
+
             }
             this.direction = undefined;
 
